@@ -1,12 +1,64 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, useScroll, useTransform } from 'framer-motion'
-import { Play, ArrowLeft, ArrowRight, ChevronDown } from 'lucide-react'
+import { motion } from 'framer-motion'
+import { Play, ArrowLeft, ArrowRight } from 'lucide-react'
 import PageTransition from '../components/PageTransition'
 import ScrollReveal from '../components/ScrollReveal'
 import AnimatedCounter from '../components/AnimatedCounter'
 import ProjectModal from '../components/ProjectModal'
 import './HomePage.css'
+
+const SHOWREEL_URL = 'https://www.youtube.com/watch?v=bLgjHzZNEuM'
+const YOUTUBE_EMBED = 'https://www.youtube.com/embed/bLgjHzZNEuM?autoplay=1&mute=1&loop=1&playlist=bLgjHzZNEuM&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1&disablekb=1&fs=0'
+
+function ParticleShowreelBtn() {
+  const [particles, setParticles] = useState([])
+  const btnRef = useRef(null)
+
+  const handleMouseMove = useCallback((e) => {
+    const rect = btnRef.current.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
+    const id = Date.now() + Math.random()
+    const angle = Math.random() * 360
+    const size = Math.random() * 7 + 3
+    const dist = Math.random() * 60 + 30
+    setParticles(prev => [...prev.slice(-25), { id, x, y, angle, size, dist }])
+    setTimeout(() => setParticles(prev => prev.filter(p => p.id !== id)), 900)
+  }, [])
+
+  const handleMouseLeave = () => setParticles([])
+
+  return (
+    <a
+      ref={btnRef}
+      href={SHOWREEL_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="showreel-btn"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+    >
+      {particles.map(p => (
+        <span
+          key={p.id}
+          className="showreel-particle"
+          style={{
+            left: p.x,
+            top: p.y,
+            width: p.size,
+            height: p.size,
+            '--angle': `${p.angle}deg`,
+            '--dist': `${p.dist}px`,
+          }}
+        />
+      ))}
+      <span className="showreel-btn__sweep" />
+      <Play size={18} className="showreel-btn__icon" />
+      <span className="showreel-btn__text">Watch Showreel</span>
+    </a>
+  )
+}
 
 const HERO_BG = 'https://lh3.googleusercontent.com/aida-public/AB6AXuBRrxn4tY6Mn95rp9FAwWKSQwYeplZ6iibF_0v038YrJo_ukxKZ4rVeHU1Mtqbvk5U8AZ8L7wiygdjS5h2F54C9nWHPrLjdebl0KRI4Z-TDrT9ipqYbuPjQkPWbiVbMuWn9QLMAOUU-TeRTXJFuX7GGNy7p_stQDwW8iK4_APOGW3u-g_1L4NusMbfcoRWBpN_KIlD2IKuxYmdwc7Vof55bftYaFp8w322ZRtrt-c-YpqS9eF70hbCuHu6SbARa9W9EaLdDIDzBPJY'
 const MANIFESTO_IMG = 'https://lh3.googleusercontent.com/aida-public/AB6AXuD7LnhNokvxXYkOt3Ir-J2GgqDPXuJ0QIy53U9KGfNPFATFDkiMwufu6zPLrEcPpSNfjbrbTJB8C5MygptRi8Rkfoq4Tw650ZUdgI3QvjG97rQ9PAqg-G-KGHGKBYsecPqPwiI2Tbp12blUj68Ao2FN1SJglyIdbekVSK4uIy0z6ue0xo05IVzfQIeK1dv6Jcf0B4f3lSyhQZfUPbV2nJj5xKme7J6FSuXkVrP7Du0cREurEeiBVuSiVGuzcG_oO19qWCYzETgnIu4'
@@ -36,9 +88,6 @@ export default function HomePage() {
   const [modalProject, setModalProject] = useState(null)
   const heroRef = useRef(null)
   const carouselRef = useRef(null)
-  const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
-  const heroImgY = useTransform(scrollYProgress, [0, 1], [0, 200])
-  const heroImgScale = useTransform(scrollYProgress, [0, 1], [1.05, 1.2])
 
   const scrollCarousel = (dir) => {
     if (carouselRef.current) {
@@ -50,49 +99,27 @@ export default function HomePage() {
     <PageTransition>
       {/* HERO */}
       <section className="hero" ref={heroRef}>
-        <div className="hero__bg">
-          <div className="hero__bg-overlay" />
-          <motion.img
-            src={HERO_BG}
-            alt="Cinematic camera rig"
-            className="hero__bg-img"
-            style={{ y: heroImgY, scale: heroImgScale }}
+        {/* YouTube Video Background */}
+        <div className="hero__video-wrap">
+          <iframe
+            src={YOUTUBE_EMBED}
+            className="hero__video-iframe"
+            allow="autoplay; encrypted-media"
+            allowFullScreen={false}
+            title="Mango Films Showreel Background"
+            frameBorder="0"
           />
+          <div className="hero__video-overlay" />
         </div>
 
-        <div className="hero__content">
-          <ScrollReveal>
-            <motion.div
-              className="hero__badge glass"
-              animate={{ y: [0, -6, 0] }}
-              transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
-            >
-              <span className="hero__badge-dot" />
-              <span className="text-label-sm" style={{ color: 'var(--primary)' }}>Cinematic Excellence</span>
-            </motion.div>
-          </ScrollReveal>
-
-          <ScrollReveal delay={0.1}>
-            <h1 className="text-display-lg hero__title">
-              Crafting Visual <span className="hero__title-accent">Masterpieces</span> For The Brave.
-            </h1>
-          </ScrollReveal>
-
-          <ScrollReveal delay={0.2}>
-            <p className="hero__subtitle">
-              From high-stakes VFX to avant-garde motion design, we transform narratives into immersive digital experiences that linger long after the screen fades to black.
-            </p>
-          </ScrollReveal>
-
-          <ScrollReveal delay={0.3}>
-            <div className="hero__ctas">
-              <button className="btn-primary">
-                <span>Watch Showreel</span>
-                <Play size={18} />
-              </button>
-              <Link to="/video" className="btn-glass">Explore Projects</Link>
-            </div>
-          </ScrollReveal>
+        <div className="hero__content hero__content--centered">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
+          >
+            <ParticleShowreelBtn />
+          </motion.div>
         </div>
 
         <div className="hero__scroll-indicator">
