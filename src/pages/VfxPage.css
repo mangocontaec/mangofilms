@@ -1,0 +1,102 @@
+.vfx-page { padding-top: 128px; padding-bottom: 64px; }
+
+.vfx-hero { margin-bottom: 96px; }
+.vfx-hero__image {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+@media (min-width: 768px) { .vfx-hero__image { height: 614px; } }
+
+.vfx-hero__img {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: grayscale(1);
+  transition: filter 1s ease, transform 1s ease;
+}
+.vfx-hero__image:hover .vfx-hero__img {
+  filter: grayscale(0);
+  transform: scale(1.05);
+}
+.vfx-hero__gradient {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, #0a0a0a 0%, transparent 60%);
+}
+.vfx-hero__text {
+  position: absolute; bottom: 0; left: 0;
+  padding: 32px;
+  z-index: 2;
+}
+@media (min-width: 768px) { .vfx-hero__text { padding: 64px; } }
+
+.vfx-gallery { margin-bottom: 96px; }
+.vfx-gallery__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 48px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.vfx-gallery__filters { display: flex; gap: 16px; }
+.vfx-filter {
+  padding: 6px 16px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: var(--secondary);
+  transition: all 0.3s;
+}
+.vfx-filter--active {
+  border-color: rgba(255,180,170,0.4);
+  color: var(--primary);
+}
+
+.vfx-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+}
+@media (min-width: 768px) {
+  .vfx-grid { grid-template-columns: repeat(12, 1fr); }
+}
+.vfx-grid__item--span-8 { grid-column: span 1; }
+.vfx-grid__item--span-4 { grid-column: span 1; }
+@media (min-width: 768px) {
+  .vfx-grid__item--span-8 { grid-column: span 8; }
+  .vfx-grid__item--span-4 { grid-column: span 4; }
+}
+
+.vfx-card {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  transition: all 0.5s cubic-bezier(0.4,0,0.2,1);
+}
+.vfx-card:hover {
+  border-color: rgba(255,85,70,0.4);
+  box-shadow: 0 0 40px rgba(255,85,70,0.1);
+}
+.vfx-card__image {
+  position: relative;
+  overflow: hidden;
+}
+.vfx-card__image img {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: grayscale(1);
+  transition: all 0.7s ease;
+}
+.vfx-card:hover .vfx-card__image img {
+  filter: grayscale(0);
+  transform: scale(1.05);
+}
+.vfx-card__darken {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0.4);
+  transition: background 0.5s;
+}
+.vfx-card:hover .vfx-card__darken { background: transparent; }
+.vfx-card__info { padding: 24px; }

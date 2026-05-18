@@ -1,0 +1,109 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 20px var(--margin-mobile);
+  transition: all 0.4s ease;
+  background: rgba(18, 20, 20, 0.6);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 40px rgba(255, 85, 70, 0.08);
+}
+
+@media (min-width: 768px) {
+  .navbar { padding: 20px var(--margin-desktop); }
+}
+
+.navbar--scrolled {
+  background: rgba(10, 10, 10, 0.9);
+  box-shadow: 0 0 60px rgba(255, 85, 70, 0.12);
+}
+
+.navbar__inner {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar__logo img {
+  height: 32px;
+  object-fit: contain;
+}
+@media (min-width: 768px) {
+  .navbar__logo img { height: 40px; }
+}
+
+.navbar__links {
+  display: none;
+  gap: 32px;
+  align-items: center;
+}
+@media (min-width: 900px) {
+  .navbar__links { display: flex; }
+}
+
+.navbar__link {
+  color: var(--secondary-fixed-dim, var(--secondary));
+  transition: color 0.3s ease;
+  padding-bottom: 4px;
+  border-bottom: 2px solid transparent;
+}
+.navbar__link:hover { color: var(--primary); }
+.navbar__link--active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
+.navbar__cta {
+  display: none;
+}
+@media (min-width: 900px) {
+  .navbar__cta { display: inline-flex; }
+}
+
+.navbar__hamburger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  width: 44px;
+  height: 44px;
+}
+@media (min-width: 900px) {
+  .navbar__hamburger { display: none; }
+}
+
+/* Mobile Menu */
+.mobile-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  background: rgba(10, 10, 10, 0.97);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 80px;
+}
+
+.mobile-menu__links {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  text-align: center;
+}
+
+.mobile-menu__link {
+  color: var(--secondary);
+  transition: color 0.3s;
+}
+.mobile-menu__link:hover,
+.mobile-menu__link--active {
+  color: var(--primary);
+}
