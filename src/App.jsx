@@ -8,12 +8,14 @@ import MotionPage from './pages/MotionPage'
 import VfxPage from './pages/VfxPage'
 import PhotographyPage from './pages/PhotographyPage'
 import ContactPage from './pages/ContactPage'
+import AuroraCanvas from './components/ui/ambient-aurora'
 
 function App() {
   const location = useLocation()
 
   return (
     <>
+      <AuroraCanvas />
       <Navbar />
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>

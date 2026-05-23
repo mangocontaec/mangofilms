@@ -10,8 +10,10 @@ import './HomePage.css'
 
 const SHOWREEL_URL = 'https://www.youtube.com/watch?v=bLgjHzZNEuM'
 const YOUTUBE_EMBED = 'https://www.youtube.com/embed/bLgjHzZNEuM?autoplay=1&mute=1&loop=1&playlist=bLgjHzZNEuM&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1&disablekb=1&fs=0'
+const WA_LINK = 'https://wa.link/uviyuj'
 
-function ParticleShowreelBtn() {
+/* ── Reusable particle button ── */
+function ParticleBtn({ href, target = '_blank', children, className = '' }) {
   const [particles, setParticles] = useState([])
   const btnRef = useRef(null)
 
@@ -27,66 +29,61 @@ function ParticleShowreelBtn() {
     setTimeout(() => setParticles(prev => prev.filter(p => p.id !== id)), 900)
   }, [])
 
-  const handleMouseLeave = () => setParticles([])
-
   return (
     <a
       ref={btnRef}
-      href={SHOWREEL_URL}
-      target="_blank"
+      href={href}
+      target={target}
       rel="noopener noreferrer"
-      className="showreel-btn"
+      className={`particle-btn ${className}`}
       onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
+      onMouseLeave={() => setParticles([])}
     >
       {particles.map(p => (
         <span
           key={p.id}
           className="showreel-particle"
           style={{
-            left: p.x,
-            top: p.y,
-            width: p.size,
-            height: p.size,
+            left: p.x, top: p.y,
+            width: p.size, height: p.size,
             '--angle': `${p.angle}deg`,
             '--dist': `${p.dist}px`,
           }}
         />
       ))}
-      <span className="showreel-btn__sweep" />
-      <Play size={18} className="showreel-btn__icon" />
-      <span className="showreel-btn__text">Watch Showreel</span>
+      <span className="particle-btn__sweep" />
+      {children}
     </a>
   )
 }
 
-const HERO_BG = 'https://lh3.googleusercontent.com/aida-public/AB6AXuBRrxn4tY6Mn95rp9FAwWKSQwYeplZ6iibF_0v038YrJo_ukxKZ4rVeHU1Mtqbvk5U8AZ8L7wiygdjS5h2F54C9nWHPrLjdebl0KRI4Z-TDrT9ipqYbuPjQkPWbiVbMuWn9QLMAOUU-TeRTXJFuX7GGNy7p_stQDwW8iK4_APOGW3u-g_1L4NusMbfcoRWBpN_KIlD2IKuxYmdwc7Vof55bftYaFp8w322ZRtrt-c-YpqS9eF70hbCuHu6SbARa9W9EaLdDIDzBPJY'
-const MANIFESTO_IMG = 'https://lh3.googleusercontent.com/aida-public/AB6AXuD7LnhNokvxXYkOt3Ir-J2GgqDPXuJ0QIy53U9KGfNPFATFDkiMwufu6zPLrEcPpSNfjbrbTJB8C5MygptRi8Rkfoq4Tw650ZUdgI3QvjG97rQ9PAqg-G-KGHGKBYsecPqPwiI2Tbp12blUj68Ao2FN1SJglyIdbekVSK4uIy0z6ue0xo05IVzfQIeK1dv6Jcf0B4f3lSyhQZfUPbV2nJj5xKme7J6FSuXkVrP7Du0cREurEeiBVuSiVGuzcG_oO19qWCYzETgnIu4'
+const MANIFESTO_IMG = '/nosotros.jpg'
 
 const projects = [
   { id: 1, title: 'Neo-Genesis', subtitle: 'Creative Direction / Visual Effects', tag: 'VFX', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCTul6hAKuNX0YSpFWl7D7s_uxyeCuwkA-z4bzkn67xG5yvqg5EskZQLz99qgBakRZej2OJvqT44I_vkVmRkqlmI82AFI7LjDwG1Al6I8PXFjnP3wkgR7sur1rcKh_MVJGDtrYVQbxGoQdjCBWTSFHMlXGnCSFG1NVyxi64NUNxYyXe6jBdPC4ayeAsq1su_JNtug-pFYylxdRlEosiTM-5HoikkTMtAyM7yshNjq2MUYljy1AQIaefPXP_J2wEyLyBgnugjF2FCJo' },
-  { id: 2, title: 'The Last Frontier', subtitle: 'Cinematography / Narrative Film', tag: 'Video', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuADZ1KMvE_VF4HMexdvqLg798HoRkarhrvS0VX8Xb9gwAE-TlvAY-Kt4asIZXvKfLNlvR5nQq2XE9AE4wUkQzGki9CftSaNoIIeTv3eET-ml0kez-6aXTaGxISc2huCYnNN3Dz2fI6n7vqoUCIRpcq9U8nQH4L_C52N8uf5QbzwYO9d2593fT6HbCyi5fRC5zzogzz9w7glJkKr1gCnn4fmaaj8nGUflEYBy7k4Xh_84X2CF3dm4wq_ApkrAwWrvLbTE20CsSAybvI' },
+  { id: 2, title: 'The Last Frontier', subtitle: 'Cinematografía / Narrativa', tag: 'Video', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuADZ1KMvE_VF4HMexdvqLg798HoRkarhrvS0VX8Xb9gwAE-TlvAY-Kt4asIZXvKfLNlvR5nQq2XE9AE4wUkQzGki9CftSaNoIIeTv3eET-ml0kez-6aXTaGxISc2huCYnNN3Dz2fI6n7vqoUCIRpcq9U8nQH4L_C52N8uf5QbzwYO9d2593fT6HbCyi5fRC5zzogzz9w7glJkKr1gCnn4fmaaj8nGUflEYBy7k4Xh_84X2CF3dm4wq_ApkrAwWrvLbTE20CsSAybvI' },
   { id: 3, title: 'Digital Pulsar', subtitle: '3D Motion / Sound Design', tag: 'Motion', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB3iECjUpzY83iUrV9U7wU9j1SuPLkkht-8vjBYys9pzkP4nfJaRZDAo_QpG8PMR4WTf9XpBi-h08E0SPIByqHix71c_37YJL7aBdoadfimIhUTFnTgxtSe8ef6U5lx796fOIQciHcYT4JRQEMLXC6K-w7zEgivmo-m2yomHL2MaMvzYR1IE5KVLghl8jJ4GBEezIGn7tKIf5qdbsXmGIAVhRsjMevvbu2EIGW21R-RPGcqRgjSBCSbOZQXHIyYXp3OGwtUfIH4u5M' },
+  { id: 4, title: 'Neon Abyss', subtitle: 'Simulación de fluidos / VFX', tag: 'VFX', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDtQu9mCREtxHUO99bBl34pJm_XCo8uguGi4Uqn05SX5rKWqfmQ1VJNsMICAiYF_7dYIL49b2eWGOunlB8jjXyIqxIi3MKJFG5FiJpVc1dCH1Kq_IaSMSqMPCwXdEfGZ7Bm_F_6KTkb1qElQjl_4dqKFCGIIpqZdaHqQ0wnFz9b8hnjJzHiPXzuA_IvLcGIwjy-Ds-T-e0JeMJI9HdKaHj3YPUvzXS3LLcXFiUmBOxuGKUOeSXEJ6pVj' },
+  { id: 5, title: 'Vortex Phase', subtitle: 'Product Motion / Branding', tag: 'Motion', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBpHKzJfgTzBkxpRbJmS6blZmUlXbpA5qbxSgFdaZTU9jW45HFKrJ7m-L4n9cF1XEUP6v6UfCbdOqO30j83gkH8wBKKGQ97b7N70fWPQ3XxBQ5HVR-x6b_oDEJPBvT7hPEZIzg4Fc0J_SbZhDENAflmcxuXRDIbCMN3i2ylKOl_8mHuJh5Pk-hy_b8DEPk_WaOaS0Xy1hJ76TkI_RFcJLwIQgPgHqCGPZ-4JJPCTg3RJVEcxFOB1r' },
+  { id: 6, title: 'Eclipse Noir', subtitle: 'Fotografía Cinemática', tag: 'Photo', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD77nDqm8WtHPhC4UczKL9iAUCZ3XlMD3l7YQRLa3uscnvTTM1NNM5IuhRhzYtCGXyLnhb-6xBl95Zwvisae1gaeYRvOxsVYfbS8CevxOXva1wGOFX0Sj6t2_Tr4bpocziBf7hY_da9UZnVo32R9q82yIJXwvEjEf6TiwcIAIIMk4LEXTOeFIe1w8tjsQ97QoMZL4aA359KzUAyV9ysVdLMMV3414p07tpnVGBRPDavyR5nV609hEQ-HTLu8f02WxJoCnIKY7xwLx8' },
+  { id: 7, title: 'Quantum City', subtitle: 'Mapping / Instalación Visual', tag: 'Mapping', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuABUi1saSWYP9ddpCpUFCSebzTcrlvnIbNPC8_0_lqBZj69uhb9Pj8d5N6xJ_EPa1a2J9kSdM8qJHSnD5wkZ87CTSAqTo1nravRq4aGYeHIFSxfOnzTwLKO5OlGavKsGwuhwxMuO4v4UDCmSDbh26er2F5pTuZW8OGHvx19LITOrunKsJX2gmnrObtCDrEJdT_Q3d_uXkQ2gs53B2fEb4LIWOOPJyUDKJVTcyND2Ma1zXxXisOn6i788pcOWmoqCw6YqdeCuxdB69w' },
+  { id: 8, title: 'Fractal Dreams', subtitle: 'Animación 2D / Ilustración', tag: '2D', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuApeioBBBVOmAWCNSj3U47uMW-WTLy6nvh3vwDUVdEarAnWv7RMFPB-dYFxrQjnbqqmsZC5yNthMlvuJ5pyhnovi0G7CF6_WdK64GUosc92BN7ByFy19tc9nspJEFrzrZA6fHwOSp0sUS0sgaUfRuDk8HfRPfjUPk_cmDrIhXweb27kE6-L3c-4YOjgTuiaVlXhFWyAUBrOV1pt43Yy6vkaUZvo8XQhPzQ7IfrEjCbpF2DCxK2G3mBXRr3mS2I_1FNAucLfB09sN1g' },
 ]
 
-const clientLogos = [
-  'https://lh3.googleusercontent.com/aida-public/AB6AXuDX--WCRaq9wbVG4ooaUDNU8a1fi1S9LbHkN2SrN1j5gEWaiUJocZJrV3vCFXBP_Kb5MA3EgPWihGDPXTh_WeDPIpg8yW-hZ5AFFaUYDXvk3zNtagEFl31jhlSUsOi7Wy8vSTZOwP80Yy0GCZJ9NLNvZ3dxi96cDkq-8M1QX-umFvayV6CZxu81b8NWDLEPa03fbCGJJDxG-JuXRl-uyr4S8-yCt0FjYqPJKp15UPxrhm-Ph33enNGa8XDtqozy1HUiS20AAzIgrEo',
-  'https://lh3.googleusercontent.com/aida-public/AB6AXuApeioBBBVOmAWCNSj3U47uMW-WTLy6nvh3vwDUVdEarAnWv7RMFPB-dYFxrQjnbqqmsZC5yNthMlvuJ5pyhnovi0G7CF6_WdK64GUosc92BN7ByFy19tc9nspJEFrzrZA6fHwOSp0sUS0sgaUfRuDk8HfRPfjUPk_cmDrIhXweb27kE6-L3c-4YOjgTuiaVlXhFWyAUBrOV1pt43Yy6vkaUZvo8XQhPzQ7IfrEjCbpF2DCxK2G3mBXRr3mS2I_1FNAucLfB09sN1g',
-  'https://lh3.googleusercontent.com/aida-public/AB6AXuAdxgbParJjzyyyUGIlcfbPmV55-0Mq3JY2bmjRcVHlHg1Tt_pYTPHl6D5ts1eJP8CGk5W3i_mstephS1PJCxPLxGBigA93Yzargfr_jZNKEHmyXkgX2Dp49HVC-2N70Itgs2ssRtOXGTQnF0RqibwoCQXQu7Mj8RywxjuiP8AdVck-u4Tj2fsa-gfLW_v6ry2W_ck3pLNN4-g5MPznnvv-Tc_n2wOKUVMltXTdo98M9BO7QcejXvl7gpsowhzjnh4nOcuh01zudb4',
-  'https://lh3.googleusercontent.com/aida-public/AB6AXuDD0YRLLnvx_uc8iS_6uNlDuyRRn3KF6xk1c6SqI-GskmBjc7fllV4DGUwTuIy3S-LVV7TEXDyhbqpAmmak9P6pyHizqREgVdP8fhia9Ngs_m7zt8TZrO-4PkGy7wkvT5nh9qkxqpxNCECCbvjYQBb8t75_2B3OYA17NzgifYjNt1J9NrWu57LdNYIkUtTi5dSn3ph0tyl0QeE2mT4uSnG6nnuIghMQ4bdGVYFz1heghTa-4txrJSg8at7SjHCywPFHjEyEMxAD8gc',
-  'https://lh3.googleusercontent.com/aida-public/AB6AXuD_Pa29SAmEcXzIVcd1_mMp9m0mmdsLqzpXunntN_NW5IhsIav_dFE1810DpAzPnZeR-dBjtpV2teLt9tpH9K-nZm10Q_PputwmdMwe7OIGML48-htJEdf2Sl_vdg_4v1-d_Dy0j0w_QqdpmOIA78MAHd2Oyk8jqPfArGh5F_45YU-caDQgcakAwRWg_pzbyo4F3OfbtbqMbSjy58JAbL_TzyoEkMUd9sqOPfH65ZGL_Jd2lWFBBvgbwb6UQi59PJIA4sqlwm88RDU',
+const brandLogos = [
+  { src: '/logo-lov.png', alt: 'LOV' },
+  { src: '/logo-mango.png', alt: 'Mango Films' },
+  { src: '/logo-cartago.png', alt: 'Cartago Spirit' },
 ]
 
 const stats = [
-  { number: 356, label: 'Proyectos Realizados' },
-  { number: 200, label: 'Clientes Felices' },
-  { number: 12, label: 'Años de Experiencia' },
-  { number: 24, label: 'Premios Ganados' },
+  { number: 421, label: 'Proyectos Realizados' },
+  { number: 182, label: 'Clientes Felices' },
+  { number: 8, label: 'Años de Experiencia' },
 ]
 
 export default function HomePage() {
   const [modalProject, setModalProject] = useState(null)
-  const heroRef = useRef(null)
   const carouselRef = useRef(null)
 
   const scrollCarousel = (dir) => {
@@ -97,9 +94,8 @@ export default function HomePage() {
 
   return (
     <PageTransition>
-      {/* HERO */}
-      <section className="hero" ref={heroRef}>
-        {/* YouTube Video Background */}
+      {/* ── HERO ── */}
+      <section className="hero">
         <div className="hero__video-wrap">
           <iframe
             src={YOUTUBE_EMBED}
@@ -112,15 +108,18 @@ export default function HomePage() {
           <div className="hero__video-overlay" />
         </div>
 
-        <div className="hero__content hero__content--centered">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-          >
-            <ParticleShowreelBtn />
-          </motion.div>
-        </div>
+        {/* Button pinned to bottom */}
+        <motion.div
+          className="hero__btn-bottom"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.8 }}
+        >
+          <ParticleBtn href={SHOWREEL_URL} className="showreel-btn">
+            <Play size={18} className="showreel-btn__icon" />
+            <span className="showreel-btn__text">Watch Showreel</span>
+          </ParticleBtn>
+        </motion.div>
 
         <div className="hero__scroll-indicator">
           <span className="text-label-sm">Scroll</span>
@@ -128,48 +127,53 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* MANIFESTO */}
+      {/* ── NOSOTROS ── */}
       <section className="manifesto container-main">
         <div className="manifesto__grid">
           <div className="manifesto__text">
             <ScrollReveal>
-              <span className="text-label-sm" style={{ color: 'var(--primary)', letterSpacing: '0.3em', display: 'block', marginBottom: 16 }}>Manifesto</span>
+              <span className="text-label-sm" style={{ color: 'var(--primary)', letterSpacing: '0.3em', display: 'block', marginBottom: 16 }}>Quiénes somos</span>
             </ScrollReveal>
             <ScrollReveal delay={0.1}>
               <h2 className="text-headline-lg" style={{ marginBottom: 32, color: '#fff' }}>
-                We design and deploy cinematic solutions with <span style={{ color: 'var(--secondary)' }}>people at the core</span>, ensuring every frame enhances real user experiences.
+                Nosotros.
               </h2>
             </ScrollReveal>
-            <ScrollReveal delay={0.2}>
+            <ScrollReveal delay={0.15}>
               <div className="manifesto__divider" />
             </ScrollReveal>
-            <ScrollReveal delay={0.3}>
-              <p style={{ color: 'rgba(200,198,197,0.7)', maxWidth: 560 }}>
-                Mango Films is more than a production house. We are a collective of dreamers, technical wizards, and storytellers based in the heart of creativity. We push the boundaries of what is possible in the digital realm.
+            <ScrollReveal delay={0.2}>
+              <p style={{ color: 'rgba(200,198,197,0.85)', maxWidth: 560, marginBottom: 24, lineHeight: 1.8 }}>
+                Somos una productora audiovisual con varios años de experiencia enfocada en las artes visuales multidisciplinarias como <span style={{ color: 'var(--primary)' }}>3D, Animación 2D, VFX, Filmmaking, Mapping</span>.
+              </p>
+            </ScrollReveal>
+            <ScrollReveal delay={0.25}>
+              <p style={{ color: 'rgba(200,198,197,0.7)', maxWidth: 560, lineHeight: 1.8 }}>
+                Mango Films se ubica en <strong style={{ color: '#fff' }}>Ambato — Ecuador</strong>, siendo parte de varios proyectos colaborativos con varias productoras a nivel nacional e internacional, teniendo un amplio portafolio de trabajos de alto nivel.
               </p>
             </ScrollReveal>
           </div>
 
           <ScrollReveal delay={0.2} direction="right" className="manifesto__image-wrap">
             <div className="manifesto__image-card glass primary-glow">
-              <img src={MANIFESTO_IMG} alt="Digital art projection" />
+              <img src={MANIFESTO_IMG} alt="Equipo Mango Films" />
               <div className="manifesto__image-overlay" />
               <div className="manifesto__image-badge">
                 <span className="manifesto__image-line" />
-                <p className="text-label-sm" style={{ color: 'var(--primary)' }}>Est. 2012</p>
+                <p className="text-label-sm" style={{ color: 'var(--primary)' }}>Ambato — Ecuador</p>
               </div>
             </div>
           </ScrollReveal>
         </div>
       </section>
 
-      {/* SELECTED WORKS */}
+      {/* ── PROYECTOS SELECCIONADOS ── */}
       <section className="works">
         <div className="container-main works__header">
           <div>
             <ScrollReveal>
-              <span className="text-label-sm" style={{ color: 'var(--primary)', letterSpacing: '0.3em', display: 'block', marginBottom: 16 }}>Portfolio</span>
-              <h2 className="text-headline-lg" style={{ color: '#fff' }}>Selected Works</h2>
+              <span className="text-label-sm" style={{ color: 'var(--primary)', letterSpacing: '0.3em', display: 'block', marginBottom: 16 }}>Portafolio</span>
+              <h2 className="text-headline-lg" style={{ color: '#fff' }}>Proyectos Seleccionados</h2>
             </ScrollReveal>
           </div>
           <div className="works__arrows">
@@ -182,32 +186,36 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="works__carousel no-scrollbar" ref={carouselRef}>
-          {projects.map((p, i) => (
-            <ScrollReveal key={p.id} delay={i * 0.1} className="works__card-wrap">
-              <motion.div
-                className="works__card"
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.4 }}
-                onClick={() => setModalProject(p)}
-              >
-                <div className="works__card-image">
-                  <img src={p.image} alt={p.title} />
-                  <div className="works__card-overlay" />
-                  <div className="works__card-play">
-                    <Play size={24} fill="#fff" />
+        <div className="works__carousel-wrap">
+          <div className="works__fade-left" />
+          <div className="works__carousel no-scrollbar" ref={carouselRef}>
+            {projects.map((p, i) => (
+              <ScrollReveal key={p.id} delay={i * 0.07} className="works__card-wrap">
+                <motion.div
+                  className="works__card"
+                  whileHover={{ scale: 1.03 }}
+                  transition={{ duration: 0.4 }}
+                  onClick={() => setModalProject(p)}
+                >
+                  <div className="works__card-image">
+                    <img src={p.image} alt={p.title} />
+                    <div className="works__card-overlay" />
+                    <div className="works__card-play">
+                      <Play size={24} fill="#fff" />
+                    </div>
+                    <span className="works__card-tag glass text-label-xs">{p.tag}</span>
                   </div>
-                  <span className="works__card-tag glass text-label-xs">{p.tag}</span>
-                </div>
-                <h3 className="text-headline-mobile works__card-title">{p.title}</h3>
-                <p className="works__card-subtitle">{p.subtitle}</p>
-              </motion.div>
-            </ScrollReveal>
-          ))}
+                  <h3 className="text-headline-mobile works__card-title">{p.title}</h3>
+                  <p className="works__card-subtitle">{p.subtitle}</p>
+                </motion.div>
+              </ScrollReveal>
+            ))}
+          </div>
+          <div className="works__fade-right" />
         </div>
       </section>
 
-      {/* STATS */}
+      {/* ── STATS ── */}
       <section className="stats container-main">
         <div className="stats__grid">
           {stats.map((s, i) => (
@@ -223,49 +231,50 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CLIENT LOGOS */}
+      {/* ── MARCAS ── */}
       <section className="clients">
-        <div className="container-main" style={{ textAlign: 'center', marginBottom: 64 }}>
-          <span className="text-label-sm" style={{ color: 'rgba(200,198,197,0.4)', letterSpacing: '0.5em' }}>
-            Trusted By Industry Leaders
-          </span>
+        <div className="container-main" style={{ textAlign: 'center', marginBottom: 48 }}>
+          <ScrollReveal>
+            <span className="text-label-sm" style={{ color: 'rgba(200,198,197,0.5)', letterSpacing: '0.4em' }}>
+              Marcas que confían en nuestro trabajo
+            </span>
+          </ScrollReveal>
         </div>
         <div className="clients__logos">
-          {clientLogos.map((logo, i) => (
+          {brandLogos.map((logo, i) => (
             <motion.img
               key={i}
-              src={logo}
-              alt="Client logo"
+              src={logo.src}
+              alt={logo.alt}
               className="clients__logo"
-              whileHover={{ scale: 1.1 }}
+              whileHover={{ scale: 1.12, filter: 'grayscale(0) brightness(1.2)' }}
             />
           ))}
         </div>
       </section>
 
-      {/* CTA */}
+      {/* ── CTA ── */}
       <section className="cta-section container-main">
         <div className="cta-section__card glass">
           <div className="cta-section__glow cta-section__glow--tl" />
           <div className="cta-section__glow cta-section__glow--br" />
           <div style={{ position: 'relative', zIndex: 1 }}>
             <ScrollReveal>
-              <h2 className="text-display-lg" style={{ color: '#fff', marginBottom: 32, textAlign: 'center' }}>
-                ¿Deseas realizar un proyecto? <br />
-                <span style={{ color: 'var(--primary)', fontStyle: 'italic' }}>Contáctanos ahora.</span>
+              <h2 className="text-display-lg" style={{ color: '#fff', marginBottom: 16, textAlign: 'center' }}>
+                ¡Hagamos un proyecto juntos!
               </h2>
-            </ScrollReveal>
-            <ScrollReveal delay={0.1}>
-              <p style={{ color: 'rgba(200,198,197,0.7)', marginBottom: 48, maxWidth: 560, margin: '0 auto 48px', textAlign: 'center' }}>
-                Estamos listos para llevar tu visión al siguiente nivel. Cuéntanos tu idea y nuestro equipo se pondrá en contacto en menos de 24 horas.
+              <p className="text-headline-mobile" style={{ color: 'var(--primary)', fontStyle: 'italic', textAlign: 'center', marginBottom: 48 }}>
+                Contáctanos ahora.
               </p>
             </ScrollReveal>
-            <ScrollReveal delay={0.2}>
+            <ScrollReveal delay={0.15}>
               <div className="cta-section__buttons">
-                <a href="https://wa.me/yourwhatsappnumber" className="btn-primary">
-                  Contactar por WhatsApp
-                </a>
-                <Link to="/video" className="btn-glass">Nuestros Servicios</Link>
+                <ParticleBtn href={WA_LINK} className="wa-btn">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style={{ flexShrink: 0 }}>
+                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.246 2.248 3.484 5.232 3.484 8.412 0 6.556-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.309 1.656zm6.222-4.032c1.53.913 3.36 1.396 5.229 1.397 5.462 0 9.903-4.44 9.905-9.903 0-2.646-1.03-5.133-2.902-7.007-1.871-1.873-4.359-2.903-7.007-2.903-5.463 0-9.903 4.44-9.905 9.903 0 1.929.505 3.808 1.46 5.47l-.951 3.474 3.567-.935z"/>
+                  </svg>
+                  <span style={{ position: 'relative', zIndex: 1 }}>Contactar por WhatsApp</span>
+                </ParticleBtn>
               </div>
             </ScrollReveal>
           </div>
